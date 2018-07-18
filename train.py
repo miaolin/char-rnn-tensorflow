@@ -1,13 +1,10 @@
 #!/usr/bin/env python
-
 from __future__ import print_function
 import tensorflow as tf
-
 import argparse
 import time
 import os
 from six.moves import cPickle
-
 from utils import TextLoader
 from model import Model
 

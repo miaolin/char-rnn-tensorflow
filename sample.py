@@ -1,14 +1,10 @@
 #!/usr/bin/env python
-
 from __future__ import print_function
 import tensorflow as tf
-
 import argparse
 import os
 from six.moves import cPickle
-
 from model import Model
-
 from six import text_type
 
 
