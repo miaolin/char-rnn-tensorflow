@@ -5,7 +5,7 @@ from six.moves import cPickle
 import numpy as np
 
 
-class TextLoader():
+class TextLoader:
     def __init__(self, data_dir, batch_size, seq_length, encoding='utf-8'):
         self.data_dir = data_dir
         self.batch_size = batch_size
@@ -39,7 +39,6 @@ class TextLoader():
         self.tensor = np.array(list(map(self.vocab.get, data)))
         np.save(tensor_file, self.tensor)
 
-
     # load the preprocessed the data if the data has been processed before.
     def load_preprocessed(self, vocab_file, tensor_file):
         with open(vocab_file, 'rb') as f:
@@ -47,30 +46,28 @@ class TextLoader():
         self.vocab_size = len(self.chars)
         self.vocab = dict(zip(self.chars, range(len(self.chars))))
         self.tensor = np.load(tensor_file)
-        self.num_batches = int(self.tensor.size / (self.batch_size *
-                                                   self.seq_length))
-    # seperate the whole data into different batches.
+        self.num_batches = int(self.tensor.size / (self.batch_size * self.seq_length))
+
+    # separate the whole data into different batches.
     def create_batches(self):
-        self.num_batches = int(self.tensor.size / (self.batch_size *
-                                                   self.seq_length))
+        self.num_batches = int(self.tensor.size / (self.batch_size * self.seq_length))
 
         # When the data (tensor) is too small,
         # let's give them a better error message
         if self.num_batches == 0:
             assert False, "Not enough data. Make seq_length and batch_size small."
 
-        # reshape the original data into the length self.num_batches * self.batch_size * self.seq_length for convenience.
+        # reshape the original data into the length self.num_batches * self.batch_size * self.seq_length
+        # for convenience.
         self.tensor = self.tensor[:self.num_batches * self.batch_size * self.seq_length]
         xdata = self.tensor
         ydata = np.copy(self.tensor)
 
-        #ydata is the xdata with one position shift.
+        # ydata is the xdata with one position shift.
         ydata[:-1] = xdata[1:]
         ydata[-1] = xdata[0]
-        self.x_batches = np.split(xdata.reshape(self.batch_size, -1),
-                                  self.num_batches, 1)
-        self.y_batches = np.split(ydata.reshape(self.batch_size, -1),
-                                  self.num_batches, 1)
+        self.x_batches = np.split(xdata.reshape(self.batch_size, -1), self.num_batches, 1)
+        self.y_batches = np.split(ydata.reshape(self.batch_size, -1), self.num_batches, 1)
 
     def next_batch(self):
         x, y = self.x_batches[self.pointer], self.y_batches[self.pointer]

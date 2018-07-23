@@ -30,7 +30,8 @@ def sample(args):
         saved_args = cPickle.load(f)
     with open(os.path.join(args.save_dir, 'chars_vocab.pkl'), 'rb') as f:
         chars, vocab = cPickle.load(f)
-    #Use most frequent char if no prime is given
+
+    # Use most frequent char if no prime is given
     if args.prime == '':
         args.prime = chars[0]
     model = Model(saved_args, training=False)
@@ -42,6 +43,7 @@ def sample(args):
             saver.restore(sess, ckpt.model_checkpoint_path)
             print(model.sample(sess, chars, vocab, args.n, args.prime,
                                args.sample).encode('utf-8'))
+
 
 if __name__ == '__main__':
     main()

@@ -1,11 +1,11 @@
+#!/usr/bin/env python
 import tensorflow as tf
 from tensorflow.contrib import rnn
 from tensorflow.contrib import legacy_seq2seq
-
 import numpy as np
 
 
-class Model():
+class Model:
     def __init__(self, args, training=True):
         self.args = args
         if not training:
